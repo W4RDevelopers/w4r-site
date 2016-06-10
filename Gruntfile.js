@@ -11,11 +11,11 @@ grunt.initConfig({
   uglify: {
     all: {
       files: {
-        'js/jquery.min.js': 'bower_components/jquery/jquery.js',
-        'js/bootstrap.min.js': ['bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/collapse.js',
-                                 'bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/scrollspy.js',
-                                 'bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/button.js',
-                                 'bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/affix.js']
+        'js/vendor.min.js': ['bower_components/jquery/jquery.js',
+                                'bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/collapse.js',
+                                'bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/scrollspy.js',
+                                'bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/button.js',
+                                'bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/affix.js']
       }
     },
   },
@@ -48,6 +48,7 @@ grunt.loadNpmTasks('grunt-contrib-copy');
 grunt.loadNpmTasks('grunt-exec');
 
 grunt.registerTask('default', [ 'uglify', 'copy', 'exec:build' ]);
+grunt.registerTask('serve', ['uglify', 'copy', 'exec:serve']);
 
 
 };
