@@ -25,6 +25,10 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.app %>/_scss/**/*.{scss,sass}'],
         tasks: ['sass:server']
       },
+      uglify: {
+        files: ['<%= yeoman.app %>/js/**/*.js'],
+        tasks: ['uglify:server']
+      },
       jekyll: {
         files: [
           '<%= yeoman.app %>/**/*.{html,yml,md,mkd,markdown}',
@@ -39,7 +43,7 @@ module.exports = function (grunt) {
           src: [
             '.jekyll/**/*.html',
             '.tmp/css/**/*.css',
-            '{.tmp,<%= yeoman.app %>}/js/**/*.js',
+            '.tmp/js/**/*.js',
             '{<%= yeoman.app %>}/_bower_components/**/*.js',
             '<%= yeoman.app %>/img/**/*.{gif,jpg,jpeg,png,svg,webp}'
           ]
@@ -185,13 +189,20 @@ module.exports = function (grunt) {
     // Usemin adds files to concat
     concat: {},
     // Usemin adds files to uglify
-    uglify: {},
-    // Usemin adds files to cssmin
-    cssmin: {
+    uglify: {
       dist: {
-        options: {
-          check: 'gzip'
-        }
+        files:
+        'vendor.min.js'
+      }
+      server:{
+        files: [
+          {
+          expand: true,
+          cwd: '<%= yeoman.app %>/js',
+          src: '**/*.js',
+          dest: '.tmp/js',
+          ext: '.js'
+        }]
       }
     },
     imagemin: {
@@ -286,9 +297,11 @@ module.exports = function (grunt) {
     concurrent: {
       server: [
         'sass:server',
-        'jekyll:server'
+        'jekyll:server',
+        'uglify:server'
       ],
       dist: [
+        'uglify:dist'
         'sass:dist',
         'copy:dist'
       ]
@@ -338,7 +351,7 @@ module.exports = function (grunt) {
     'useminPrepare',
     'concat',
     'cssmin',
-    'uglify',
+    'uglify:dist',
     'imagemin',
     'svgmin',
     'filerev',
