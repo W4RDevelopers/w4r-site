@@ -10,7 +10,7 @@ Do que você vai precisar:
  - [bower](https://bower.io/#install-bower) (precisa do [NodeJs](https://nodejs.org/en/download/))
  - [grunt](http://gruntjs.com/getting-started) (precisa do [NodeJs](https://nodejs.org/en/download/))
 
-Antes de qualquer coisa:
+Antes de qualquer coisa (digitar na pasta do projeto):
 
     $ npm install -g bower
     $ npm install -g grunt-cli
