@@ -1,54 +1,108 @@
-module.exports = function(grunt) {
+'use strict';
 
-grunt.initConfig({
+module.exports = function (grunt) {
 
-  sass: {
-    files: {
-      'css/bootstrap.min.css': 'bower_components/bootstrap-sass/vendor/assets/stylesheets/bootstrap.scss'
-    },
-    style: 'compressed'
-  },
-  uglify: {
-    all: {
-      files: {
-        'js/vendor.min.js': ['bower_components/jquery/jquery.js',
-                                'bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/collapse.js',
-                                'bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/scrollspy.js',
-                                'bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/button.js',
-                                'bower_components/bootstrap-sass/vendor/assets/javascripts/bootstrap/affix.js']
-      }
-    },
-  },
-  copy: {
-    bootstrap: {
-      files: [
-        {
-          expand: true,
-          cwd: 'bower_components/bootstrap-sass/vendor/assets/fonts/bootstrap',
-          src: ['**'],
-          dest: 'css/fonts/'
+    // Show elapsed time after tasks run to visualize performance
+    require('time-grunt')(grunt);
+    // Load all Grunt tasks that are listed in package.json automagically
+    require('load-grunt-tasks')(grunt);
+
+    grunt.initConfig({
+        pkg: grunt.file.readJSON('package.json'),
+        shell: {
+        	jekyllBuild: {
+        		command: 'jekyll build'
+        	},
+        	jekyllServe: {
+        		command: 'jekyll serve'
+        	}
+        },
+        uglify: {
+        	vendor: {
+        		files: {
+        			'_site/js/vendor.min.js': [
+        				'bower_components/jquery/dist/jquery.js',
+        				'bower_components/bootstrap-sass/assets/javascripts/bootstrap.js'
+        			]
+        		}
+        	},
+        	custom: {
+        		files: {
+        			'_site/js/custom.min.js': [
+        				'js/main.js'
+        			]
+        		}
+        	}
+
+        },
+        watch: {
+        	sass: {
+        		files: ['_sass/**/*.{scss, sass}'],
+        		tasks: ['sass']
+        	},
+        	uglify: {
+        		files: ['js/*.js'],
+        		tasks: ['uglify:custom']
+        	}
+        },
+        sass: {
+        	options: {
+        		sourceMap: true,
+        		relativeAssets: false,
+        		outputStyle: 'expanded',
+        		sassDir: '_sass',
+        		cssDir: '_site/css'
+        	},
+        	build: {
+        		files: [{
+        			expand:true,
+        			cwd: '_sass/',
+        			src: ['**/*.{scss,sass}'],
+        			dest: '_site/css',
+        			ext: '.css'
+        		}]
+        	}
+        },
+         browserSync: {
+            dev: {
+                bsFiles: {
+                    src : [
+                        '_site/css/*.css',
+                        '_site/js/*.js',
+                        '_site/*.html'
+                    ]
+                },
+                options: {
+                    watchTask: true,
+                    server: '_site'
+                }
+            }
+        },
+        concurrent: {
+        	serve: [
+        		'sass',
+        		'uglify',
+        		'watch',
+        		'shell:jekyllServe'
+        	],
+        	options: {
+        		logConcurrentOutput: true
+        	}
         }
-      ]
-    }
-  },
-  exec: {
-    build: {
-      cmd: 'jekyll build'
-    },
-    serve: {
-      cmd: 'jekyll serve --watch'
-    }
-  }
-});
+        // This is where our tasks are defined and configured
+    });
 
-grunt.loadNpmTasks('grunt-contrib-uglify');
-grunt.loadNpmTasks('grunt-contrib-sass');
-grunt.loadNpmTasks('grunt-contrib-less');
-grunt.loadNpmTasks('grunt-contrib-copy');
-grunt.loadNpmTasks('grunt-exec');
+    grunt.registerTask('serve', [
+    	'browserSync',
+    	'concurrent:serve'
+    ]);
 
-grunt.registerTask('default', [ 'uglify', 'copy', 'exec:build' ]);
-grunt.registerTask('serve', ['uglify', 'copy', 'exec:serve']);
+    grunt.registerTask('build', [
+    	'shell:jekyllBuild',
+    	'sass',
+    	'uglify'
+    ]);
 
+    grunt.registerTask('default', 'build');
 
 };
