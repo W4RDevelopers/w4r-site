@@ -49,7 +49,7 @@ module.exports = function (grunt) {
         	options: {
         		sourceMap: true,
         		relativeAssets: false,
-        		outputStyle: 'expanded',
+        		outputStyle: 'compressed',
         		sassDir: '_sass',
         		cssDir: '_site/css'
         	},
@@ -61,7 +61,19 @@ module.exports = function (grunt) {
         			dest: '_site/css',
         			ext: '.css'
         		}]
-        	}
+        	},
+            serve: {
+                options: {
+                    outputStyle: 'expanded',
+                },
+                files: [{
+                    expand:true,
+                    cwd: '_sass/',
+                    src: ['**/*.{scss,sass}'],
+                    dest: '_site/css',
+                    ext: '.css'
+                }]
+            }
         },
          browserSync: {
             dev: {
@@ -80,7 +92,7 @@ module.exports = function (grunt) {
         },
         concurrent: {
         	serve: [
-        		'sass',
+        		'sass:serve',
         		'uglify',
         		'watch',
         		'shell:jekyllServe'
@@ -99,7 +111,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('build', [
     	'shell:jekyllBuild',
-    	'sass',
+    	'sass:build',
     	'uglify'
     ]);
 
