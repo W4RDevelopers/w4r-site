@@ -1,21 +1,27 @@
 {
-  "name": "my-site-name",
-  "description": "My new Jekyll site.",
-  "version": "0.1.0",
-  "devDependencies": {
-    "bower": "^1.7.9",
-    "grunt": "~0.4.5",
-    "grunt-browser-sync": "^2.2.0",
-    "grunt-browserify": "^5.0.0",
-    "grunt-concurrent": "^2.3.0",
-    "grunt-contrib-uglify": "^1.0.1",
-    "grunt-contrib-watch": "~0.6.1",
-    "grunt-sass": "^1.2.0",
-    "grunt-shell": "^1.1.2",
-    "load-grunt-tasks": "~0.6.0",
-    "time-grunt": "~0.4.0"
-  },
+  "name": "w4r-site",
+  "version": "1.0.0",
+  "description": "A site to the W4R Developers (Or Dinamic Developers)",
+  "main": "index.js",
   "scripts": {
-    "postinstall": "bower install"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "gulp",
+    "jekyll",
+    "seed"
+  ],
+  "author": "Cesar de Barros <cbsorrilha@hotmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^2.16.0",
+    "browserify": "^13.1.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-sass": "^2.3.2",
+    "gulp-uglify": "^2.0.0",
+    "gulp-util": "^3.0.7",
+    "through2": "^2.0.1",
+    "vinyl-transform": "^1.0.0"
   }
 }
